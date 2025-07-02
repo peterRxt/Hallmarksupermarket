@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HALLMARK SUPERMARKET</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Pacifico&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #7952ff;
+            --secondary-color: #ff7a59;
+            --accent-color: #05dfd7;
+            --card-gradient: linear-gradient(135deg, #f8fafc 40%, #d6eaff 100%);
+            --text-color: #22223b;
+            --background-gradient: linear-gradient(135deg, #f8fafc 70%, #d0c3fc 100%);
+            --footer-bg: linear-gradient(90deg, #7952ff 0%, #ff7a59 100%);
+            --border-radius: 18px;
+            --shadow: 0 8px 32px rgba(80, 41, 255, 0.11);
+            --nav-bg: rgba(255,255,255,0.97);
+            --nav-shadow: 0 2px 12px rgba(121,82,255,0.10);
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0; padding: 0;
+        }
+        body {
+            font-family: 'Montserrat', 'Roboto', Arial, sans-serif;
+            color: var(--text-color);
+            min-height: 100vh;
+            background: var(--background-gradient);
+            display: flex;
+            flex-direction: column;
+        }
+        /* Fancy Navbar */
+        nav {
+            background: var(--nav-bg);
+            box-shadow: var(--nav-shadow);
+            padding: 16px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        nav .logo {
+            font-family: 'Pacifico', cursive;
+            font-size: 2.2em;
+            color: var(--primary-color);
+            letter-spacing: 1px;
+            text-shadow: 1px 2px 8px #eaddff85;
+        }
+        /* Hero Section */
+        .hero {
+            background-image: linear-gradient(rgba(121, 82, 255, 0.70), rgba(5,223,215,0.2)), url('img28.jpg');
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+            text-align: center;
+            padding: 90px 20px 70px 20px;
+            position: relative;
+            min-height: 420px;
+            border-radius: 0 0 36px 36px;
+            box-shadow: 0 10px 32px #7952ff33;
+            margin-bottom: 24px;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+            animation: fadeInDown 1s cubic-bezier(.6,.05,.4,.95);
+        }
+        .hero-content h1 {
+            font-family: 'Pacifico', cursive;
+            font-size: 3.3em;
+            margin-bottom: 18px;
+            letter-spacing: 1px;
+            background: linear-gradient(90deg, #fff 60%, #05dfd7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 8px #0005;
+        }
+        .hero-content p {
+            font-size: 1.33em;
+            font-weight: 500;
+            color: #f2f5ff;
+            text-shadow: 0 1px 4px #2227;
+            margin-bottom: 0;
+        }
+        /* Main */
+        .container {
+            max-width: 1240px;
+            margin: 0 auto 40px auto;
+            padding: 0 24px;
+            flex-grow: 1;
+            animation: fadeIn 1.3s cubic-bezier(.5,.05,.4,.99);
+        }
+        /* Animated Cards Grid */
+        .link-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 36px;
+        }
+        .link-card {
+            background: var(--card-gradient);
+            border-radius: var(--border-radius);
+            padding: 38px 28px 30px 28px;
+            text-decoration: none;
+            color: var(--text-color);
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.26s cubic-bezier(.5,1.5,.4,1), box-shadow 0.26s;
+            border: 2.5px solid transparent;
+            cursor: pointer;
+        }
+        .link-card::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%; right: -50%; bottom: -50%;
+            background: radial-gradient(circle at 60% 10%, var(--accent-color) 0%, transparent 65%);
+            opacity: 0.18;
+            z-index: 0;
+            transition: opacity 0.3s;
+        }
+        .link-card:hover {
+            transform: translateY(-10px) scale(1.025) rotate(-1.3deg);
+            box-shadow: 0 12px 32px #7952ff38;
+            border-color: var(--primary-color);
+            background: linear-gradient(120deg, #fff 70%, #d6eaffc7 100%);
+        }
+        .link-card h2 {
+            color: var(--primary-color);
+            font-size: 2em;
+            margin-bottom: 12px;
+            font-family: 'Montserrat', 'Roboto', sans-serif;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            z-index: 1;
+            position: relative;
+        }
+        .link-card p {
+            font-size: 1.08em;
+            line-height: 1.5;
+            opacity: 0.86;
+            z-index: 1;
+            position: relative;
+            color: #2d2c51;
+        }
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 26px 10px 20px 10px;
+            background: var(--footer-bg);
+            color: #fff;
+            font-size: 1.05em;
+            border-radius: 24px 24px 0 0;
+            letter-spacing: 0.03em;
+            margin-top: 28px;
+            box-shadow: 0 -4px 32px #7952ff10;
+        }
+        footer p {
+            margin: 0;
+        }
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(36px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-36px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        /* Responsive */
+        @media (max-width: 900px) {
+            .hero-content h1 { font-size: 2.3em;}
+            .container { padding: 0 12px;}
+            .link-section { gap: 20px;}
+        }
+        @media (max-width: 600px) {
+            nav .logo { font-size: 1.4em;}
+            .hero { padding: 50px 6vw 30px 6vw; min-height: 200px;}
+            .hero-content h1 { font-size: 1.42em;}
+            .link-card { padding: 23px 12px; }
+            .link-card h2 { font-size: 1.2em;}
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">Hallmark Supermarket</div>
+    </nav>
+    <header class="hero">
+        <div class="hero-content">
+            <h1>HALLMARK SUPERMARKET.</h1>
+            <p><span style="color:#05dfd7;">August 2018</span> <span style="color:#fff;">to</span> <span style="color:#ff7a59;">July 17, 2024</span></p>
+        </div>
+    </header>
+    <main class="container">
+        <section class="link-section">
+            <a href="overview.html" class="link-card">
+                <h2>Overview</h2>
+                <p>My daily operations</p>
+            </a>
+            <a href="health.html" class="link-card">
+                <h2>Health</h2>
+                <p>wellness & healthy.</p>
+            </a>
+            <a href="images.html" class="link-card">
+                <h2>Images</h2>
+                <p>Gallery of memories.</p>
+            </a>
+            <a href="leaving.html" class="link-card">
+                <h2>Leaving</h2>
+                <p>About quitting.</p>
+            </a>
+            <a href="members.html" class="link-card">
+                <h2>Members</h2>
+                <p>Meet friends, colleagues, and the team who made it special.</p>
+            </a>
+            <a href="ruth.html" class="link-card">
+                <h2>Ruth</h2>
+                <p>A spotlight on Ruth.</p>
+            </a>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025<span style="color:#05dfd7;">&#10084;</span> for Hallmark Supermarket.</p>
+    </footer>
+</body>
+</html>
