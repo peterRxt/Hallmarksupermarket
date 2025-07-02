@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Image Gallery</title>
+  <style>
+    :root {
+      --bg-color: #f4f4f4;
+      --text-color: #333;
+    }
+    body.dark-mode {
+      --bg-color: #121212;
+      --text-color: #eee;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 20px;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .controls {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .controls button {
+      padding: 8px 16px;
+      margin: 5px;
+      border: none;
+      background: #4a90e2;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .controls input {
+      display: inline-block;
+      margin-top: 10px;
+    }
+
+    #gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      grid-gap: 15px;
+    }
+
+    .gallery-item {
+      position: relative;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #ccc;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      cursor: pointer;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* Modal styling */
+    #modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background: rgba(0,0,0,0.85);
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    #modal img {
+      max-width: 90%;
+      max-height: 80%;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
+    .modal-controls {
+      color: #fff;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .modal-controls button {
+      background: none;
+      border: 1px solid #fff;
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .modal-index {
+      font-size: 16px;
+    }
+
+    @media (max-width: 600px) {
+      .modal-controls {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📸 My Image Gallery</h1>
+
+  <div class="controls">
+    <button id="toggle-mode">🌙 Toggle Dark Mode</button>
+    <label>
+      Upload an Image:
+      <input type="file" id="upload" accept="image/*" />
+    </label>
+  </div>
+
+  <div id="gallery"></div>
+
+  <!-- Modal -->
+  <div id="modal">
+    <img id="modal-img" src="" />
+    <div class="modal-controls">
+      <button id="prev">⬅ Prev</button>
+      <span class="modal-index" id="counter"></span>
+      <button id="next">Next ➡</button>
+      <button id="close">❌ Close</button>
+    </div>
+  </div>
+
+  <script>
+    const gallery = document.getElementById("gallery");
+    const modal = document.getElementById("modal");
+    const modalImg = document.getElementById("modal-img");
+    const counter = document.getElementById("counter");
+    const toggleMode = document.getElementById("toggle-mode");
+    const uploadInput = document.getElementById("upload");
+
+    const images = [];
+    let currentIndex = 0;
+
+    // Load gallery
+    for (let i = 1; i <= 500; i++) {
+      const fileName = `img${i}.jpg`;
+      const img = new Image();
+      img.src = fileName;
+      img.alt = fileName;
+
+      img.onerror = () => {};
+      img.onload = () => {
+        const div = document.createElement("div");
+        div.className = "gallery-item";
+        div.appendChild(img.cloneNode());
+
+        const index = images.length;
+        div.addEventListener("click", () => openModal(index));
+
+        gallery.appendChild(div);
+        images.push(fileName);
+      };
+    }
+
+    // Modal functions
+    function openModal(index) {
+      currentIndex = index;
+      modal.style.display = "flex";
+      modalImg.src = images[index];
+      counter.textContent = `Image ${index + 1} of ${images.length}`;
+    }
+
+    function updateModal(offset) {
+      currentIndex = (currentIndex + offset + images.length) % images.length;
+      modalImg.src = images[currentIndex];
+      counter.textContent = `Image ${currentIndex + 1} of ${images.length}`;
+    }
+
+    document.getElementById("next").onclick = () => updateModal(1);
+    document.getElementById("prev").onclick = () => updateModal(-1);
+    document.getElementById("close").onclick = () => modal.style.display = "none";
+
+    // Dark mode toggle
+    toggleMode.onclick = () => {
+      document.body.classList.toggle("dark-mode");
+    };
+
+    // Upload
+    uploadInput.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function (event) {
+        const div = document.createElement("div");
+        div.className = "gallery-item";
+        const img = document.createElement("img");
+        img.src = event.target.result;
+        img.alt = file.name;
+
+        div.appendChild(img);
+        div.addEventListener("click", () => {
+          images.push(event.target.result);
+          openModal(images.length - 1);
+        });
+
+        gallery.appendChild(div);
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // Close modal on background click
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) modal.style.display = "none";
+    });
+  </script>
+</body>
+</html>
